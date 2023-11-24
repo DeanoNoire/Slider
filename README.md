@@ -8,3 +8,9 @@ Parts:
 - Smoother V1.0 ???
 - 9V Battery
 - PS2 joystick - https://arduinogetstarted.com/tutorials/arduino-joystick
+
+MENU
+- Move - after confirmation 2 speeds left and right (endstops?)
+- Duration - time to run whole lenght
+- Direction - Left to right or Right to left
+- 
