@@ -2,17 +2,13 @@
 
 Parts:
 - Espressif ESP32-S3-Wroom-1
-- QAPASS display
-- NUMA 14 motor 42-40
-- A988 driver for stepper motor
-- Smoother V1.0 ???
-- 9V Battery
-- PS2 joystick - https://arduinogetstarted.com/tutorials/arduino-joystick
 
-- Custom chars: https://arduinointro.com/articles/projects/create-custom-characters-for-the-i2c-lcd-easily
+Step size: 44
+110cm long rail = 61600 steps
 
-MENU
-- Move - after confirmation 2 speeds left and right (endstops?)
-- Duration - time to run whole lenght
-- Direction - Left to right or Right to left
-- 
+Home to end:
+800 speed = 1min 45sec
+500 speed = 2min 45sec
+
+Speed = (265-seconds) / 0.2
+
