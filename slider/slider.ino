@@ -9,8 +9,10 @@ WebServer server(80);
 int homed = 0;
 int stepperPozice = 0;
 const int stepperPocetKroku = 44;
-const int stepperCelaDelka = 440;
-const int stepperSpeed = 50;
+const int stepperCelaDelka = 61600; // 1400 kroků = celá délka
+const int stepperSpeed = 500;//50; 
+const int stepperHomingSpeed = 500;
+const int endstopPin = 10;
 
 Stepper stepper = Stepper(stepperPocetKroku, 11, 13, 12, 14);
 
@@ -29,6 +31,11 @@ void handleRoot() {
         "function runFunction1() {"
         "    var xhr = new XMLHttpRequest();"
         "    xhr.open('GET', '/runFunction1', true);"
+        "    xhr.send();"
+        "}"
+        "function homing() {"
+        "    var xhr = new XMLHttpRequest();"
+        "    xhr.open('GET', '/homing', true);"
         "    xhr.send();"
         "}"
         "function sendNumber() {"
@@ -71,6 +78,7 @@ void jizda(int minuty){
   do {
     stepper.step(stepperPocetKroku);
     stepperPozice = stepperPozice + stepperPocetKroku;
+    homed = 0;
     Serial.print("Pozice:");
     Serial.println(stepperPozice);
     Serial.print("MInuty:");
@@ -80,15 +88,17 @@ void jizda(int minuty){
 }
 
 void homing(){
+  Serial.print("HOMING");
   int endStopState;
-  do {
+    stepper.setSpeed(stepperHomingSpeed);
+  do {      
       endStopState = digitalRead(endstopPin);
-      if(endStopState == HIGH){
-        stepper.step(-1);  
-        }
+      stepper.step(-stepperPocetKroku);  
     } while (endStopState == LOW);
+    Serial.println("HOMED");
     homed = 1;
     odpojMotor();
+    stepper.setSpeed(stepperSpeed);
 }
 
 void odpojMotor(){
@@ -99,8 +109,8 @@ void odpojMotor(){
 }
 
 void setup() {
-  Serial.begin(115200);
-
+  Serial.begin(9600);
+  pinMode(endstopPin, INPUT_PULLDOWN);
 // APčko
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
