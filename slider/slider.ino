@@ -10,8 +10,8 @@ int homed = 0;
 int stepperPozice = 0;
 const int stepperPocetKroku = 44;
 const int stepperCelaDelka = 61600; // 1400 kroků = celá délka
-const int stepperSpeed = 500;//50; 
-const int stepperHomingSpeed = 500;
+int stepperSpeed = 725;//50; 
+const int stepperHomingSpeed = 800;
 const int endstopPin = 10;
 
 Stepper stepper = Stepper(stepperPocetKroku, 11, 13, 12, 14);
@@ -75,17 +75,35 @@ void jizda(int minuty){
   if(homed == 0){
     homing();
     }
+  stepperSpeed = calcMinutesToSpeed(minuty);
+  stepper.setSpeed(stepperSpeed);
+  Serial.print("Minuty:");
+  Serial.println(minuty);
+  Serial.print("Rychlost:");
+  Serial.println(stepperSpeed);
   do {
     stepper.step(stepperPocetKroku);
     stepperPozice = stepperPozice + stepperPocetKroku;
     homed = 0;
-    Serial.print("Pozice:");
-    Serial.println(stepperPozice);
-    Serial.print("MInuty:");
-    Serial.println(minuty);
-    } while (stepperPozice != stepperCelaDelka);
+    //Serial.print("Pozice:");
+    //Serial.println(stepperPozice);
+    //Serial.print("MInuty:");
+    //Serial.println(minuty);
+    } while (stepperPozice != stepperCelaDelka); 
     odpojMotor();
 }
+
+
+int calcMinutesToSpeed(int minuty){
+ int vysledek = (265-minuty)/0.2;
+  if(vysledek > 800){
+    vysledek = 800;
+    Serial.print("Vysledek:");
+    Serial.println(vysledek);
+    }
+  vysledek=10;
+  return vysledek;
+  }
 
 void homing(){
   Serial.print("HOMING");
