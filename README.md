@@ -1,5 +1,7 @@
 # Slider
 
+Web: 192.168.4.1
+
 Parts:
 - Espressif ESP32-S3-Wroom-1
 
